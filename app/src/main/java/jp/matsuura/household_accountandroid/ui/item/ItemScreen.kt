@@ -1,4 +1,4 @@
-package jp.matsuura.householda_ccountandroid.ui.item
+package jp.matsuura.household_accountandroid.ui.item
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable

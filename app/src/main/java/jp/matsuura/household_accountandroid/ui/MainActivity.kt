@@ -1,4 +1,4 @@
-package jp.matsuura.householda_ccountandroid.ui
+package jp.matsuura.household_accountandroid.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

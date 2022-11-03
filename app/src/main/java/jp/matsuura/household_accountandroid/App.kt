@@ -1,4 +1,4 @@
-package jp.matsuura.householda_ccountandroid
+package jp.matsuura.household_accountandroid
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

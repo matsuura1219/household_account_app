@@ -1,4 +1,4 @@
-package jp.matsuura.householda_ccountandroid.ui
+package jp.matsuura.household_accountandroid.ui
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -17,9 +17,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import jp.matsuura.householda_ccountandroid.ui.history.HistoryScreen
-import jp.matsuura.householda_ccountandroid.ui.home.HomeScreen
-import jp.matsuura.householda_ccountandroid.ui.item.ItemScreen
+import jp.matsuura.household_accountandroid.ui.history.HistoryScreen
+import jp.matsuura.household_accountandroid.ui.home.HomeScreen
+import jp.matsuura.household_accountandroid.ui.item.ItemScreen
 
 sealed class Navigation(val route: String, val title: String, val icon: ImageVector) {
     object Home : Navigation(route = "home", title = "入力", Icons.Filled.Home)
