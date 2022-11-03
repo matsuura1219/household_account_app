@@ -3,9 +3,6 @@ package jp.matsuura.householda_ccountandroid.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -15,19 +12,7 @@ class MainActivity : AppCompatActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         setContent {
-            Greeting("Android")
+            MainScreen()
         }
     }
-
-    @Composable
-    fun Greeting(name: String) {
-        Text(text = "Hello $name!")
-    }
-
-    @Preview(showBackground = true)
-    @Composable
-    fun DefaultPreview() {
-        Greeting("Android")
-    }
-
 }
