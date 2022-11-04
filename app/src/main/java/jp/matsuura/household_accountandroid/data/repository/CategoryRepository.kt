@@ -10,7 +10,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ItemRepository @Inject constructor(
+class CategoryRepository @Inject constructor(
     private val db: AppDatabase,
 ) {
 
