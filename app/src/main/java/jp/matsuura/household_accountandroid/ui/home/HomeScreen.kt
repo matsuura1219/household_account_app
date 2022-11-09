@@ -1,6 +1,7 @@
 package jp.matsuura.household_accountandroid.ui.home
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -19,16 +20,19 @@ import androidx.hilt.navigation.compose.hiltViewModel
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
+    onClick: (Int, String) -> Unit,
 ) {
     val state by viewModel.uiState.collectAsState()
     HomeScreen(
         state = state,
+        onClick = onClick,
     )
 }
 
 @Composable
 fun HomeScreen(
     state: HomeScreenState,
+    onClick: (Int, String) -> Unit
 ) {
     val categories = state.categories
     LazyVerticalGrid(
@@ -36,7 +40,9 @@ fun HomeScreen(
         content = {
             items(count = categories.size) { index ->
                 CategoryView(
+                    categoryId = categories[index].id,
                     categoryName = categories[index].categoryName,
+                    onClick = onClick,
                 )
             }
         },
@@ -46,10 +52,12 @@ fun HomeScreen(
 
 @Composable
 fun CategoryView(
+    categoryId: Int,
     categoryName: String,
+    onClick: (Int, String) -> Unit,
 ) {
     Column (
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().clickable { onClick(categoryId, categoryName) },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Canvas(
