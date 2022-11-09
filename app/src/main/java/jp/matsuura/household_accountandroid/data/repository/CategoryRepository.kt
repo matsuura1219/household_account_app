@@ -25,7 +25,6 @@ class CategoryRepository @Inject constructor(
             val entity = CategoryEntity(
                 id = category.id,
                 categoryName = category.categoryName,
-                iconColor = category.iconColor,
             )
             db.categoryDao().insert(entity = entity)
         }
@@ -36,7 +35,6 @@ class CategoryRepository @Inject constructor(
             val entity = CategoryEntity(
                 id = category.id,
                 categoryName = category.categoryName,
-                iconColor = category.iconColor,
             )
             db.categoryDao().delete(entity = entity)
         }

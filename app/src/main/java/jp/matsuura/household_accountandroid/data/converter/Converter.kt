@@ -7,6 +7,5 @@ fun CategoryEntity.toModel(): CategoryModel {
     return CategoryModel(
         id = id,
         categoryName = categoryName,
-        iconColor = iconColor,
     )
 }
