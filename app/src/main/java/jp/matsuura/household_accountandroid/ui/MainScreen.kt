@@ -60,7 +60,7 @@ fun MainScreen() {
                 ) {
                     composable(Navigation.Home.route) {
                         title.value = Navigation.Home.title
-                        HomeScreen(viewModel = hiltViewModel())
+                        HomeScreen()
                     }
                     composable(Navigation.History.route) {
                         title.value = Navigation.History.title
