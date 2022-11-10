@@ -13,12 +13,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import jp.matsuura.household_accountandroid.ui.history.HistoryScreen
 import jp.matsuura.household_accountandroid.ui.home.HomeScreen
 import jp.matsuura.household_accountandroid.ui.input_money.InputMoneyScreen
@@ -85,10 +83,6 @@ fun MainScreen() {
                     }
                     composable(
                         route = Navigation.InputMoney.route,
-                        arguments = listOf(
-                            navArgument("categoryId") { type = NavType.IntType },
-                            navArgument("categoryName") { type = NavType.StringType },
-                        )
                     ) {
                         title.value = Navigation.InputMoney.title
                         InputMoneyScreen()
