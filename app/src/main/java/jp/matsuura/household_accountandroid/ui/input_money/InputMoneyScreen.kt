@@ -13,6 +13,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
+import jp.matsuura.household_accountandroid.ext.toStringForApp
 import jp.matsuura.household_accountandroid.ui.Navigation
 import jp.matsuura.household_accountandroid.ui.history.HistoryScreen
 import jp.matsuura.household_accountandroid.ui.home.HomeScreen
@@ -40,8 +41,9 @@ fun InputMoneyScreen(
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(text = state.category.id.toString())
+            Text(text = state.currentTime.toStringForApp())
             Text(text = state.category.categoryName)
+            Text(text = state.totalMoney.toString())
         }
     }
 }
