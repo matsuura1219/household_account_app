@@ -46,7 +46,7 @@ fun InputMoneyScreen(
                 viewModel.uiEvent.collect { event ->
                     when (event) {
                         is InputMoneyScreenEvent.Success -> {
-                            Toast.makeText(context, "登録が完了しました。", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, "${event.itemName}に${event.moneyMount} 円を登録しました。", Toast.LENGTH_SHORT).show()
                             onBackPressed(Unit)
                         }
                         is InputMoneyScreenEvent.Failure -> {

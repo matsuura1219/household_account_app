@@ -51,7 +51,9 @@ class InputMoneyViewModel @Inject constructor(
                     currentTime = uiState.value.currentTime,
                 )
             }.onSuccess {
-                _uiEvent.emit(InputMoneyScreenEvent.Success)
+                val itemName: String = uiState.value.category.categoryName
+                val moneyMount: Int = uiState.value.totalMoney
+                _uiEvent.emit(InputMoneyScreenEvent.Success(itemName = itemName, moneyMount = moneyMount))
             }.onFailure {
                 Timber.d(it)
                 _uiEvent.emit(InputMoneyScreenEvent.Failure(it))
