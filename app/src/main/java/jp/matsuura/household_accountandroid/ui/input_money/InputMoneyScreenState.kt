@@ -14,7 +14,7 @@ data class InputMoneyScreenState(
         val initValue = InputMoneyScreenState(
             currentTime = Date(),
             category = CategoryModel(id = -1, categoryName = ""),
-            totalMoney = -1,
+            totalMoney = 0,
             isNewData = false,
             isProgressBar = false,
         )

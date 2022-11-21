@@ -4,6 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import jp.matsuura.household_accountandroid.ext.isNotNumber
+import jp.matsuura.household_accountandroid.model.CalculatorSymbolType
 import jp.matsuura.household_accountandroid.model.CategoryModel
 import jp.matsuura.household_accountandroid.usecase.InsertTransactionDataUseCase
 import kotlinx.coroutines.flow.*
@@ -58,14 +60,27 @@ class InputMoneyViewModel @Inject constructor(
         }
     }
 
-    fun onTextInput(input: String) {
-        // バリデーションのチェック
-        _uiState.update { it.copy( totalMoney = input.toInt() ) }
+    fun onNumberClick(input: String) {
+        if (input.isBlank() && !input.isNotNumber()) return
+        val number = uiState.value.totalMoney
+        val result: String = if (number == 0) {
+            input
+        } else {
+            number.toString() + input
+        }
+        _uiState.update { it.copy( totalMoney = result.toInt() ) }
     }
 
-    fun onDeleteButtonClicked() {
-        val currentMoney: Int = uiState.value.totalMoney
-        _uiState.update { it.copy( totalMoney = currentMoney / 10 ) }
+    fun onSymbolClick(type: CalculatorSymbolType) {
+        when (type) {
+            CalculatorSymbolType.DEL -> {
+                val number = uiState.value.totalMoney / 10
+                _uiState.update { it.copy( totalMoney = number ) }
+            }
+            else -> {}
+        }
     }
+
+
 
 }
