@@ -54,7 +54,7 @@ class InputMoneyViewModel @Inject constructor(
                 _uiEvent.emit(InputMoneyScreenEvent.Success)
             }.onFailure {
                 Timber.d(it)
-                _uiEvent.emit(InputMoneyScreenEvent.Failure)
+                _uiEvent.emit(InputMoneyScreenEvent.Failure(it))
             }
             _uiState.update { it.copy(isProgressBar = false) }
         }

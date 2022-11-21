@@ -1,20 +1,28 @@
 package jp.matsuura.household_accountandroid.ui.input_money
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import jp.matsuura.household_accountandroid.ext.toStringForApp
 import jp.matsuura.household_accountandroid.model.CalculatorSymbolType
+import kotlinx.coroutines.launch
 
 @Composable
 fun InputMoneyScreen(
-    viewModel: InputMoneyViewModel = hiltViewModel()
+    viewModel: InputMoneyViewModel = hiltViewModel(),
+    onBackPressed: (Unit) -> Unit,
 ) {
     val state by viewModel.uiState.collectAsState()
     InputMoneyScreen(
@@ -29,6 +37,27 @@ fun InputMoneyScreen(
             viewModel.onFinishButtonClicked()
         },
     )
+
+    val context = LocalContext.current
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    LaunchedEffect(key1 = Unit) {
+        lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            launch {
+                viewModel.uiEvent.collect { event ->
+                    when (event) {
+                        is InputMoneyScreenEvent.Success -> {
+                            Toast.makeText(context, "登録が完了しました。", Toast.LENGTH_SHORT).show()
+                            onBackPressed(Unit)
+                        }
+                        is InputMoneyScreenEvent.Failure -> {
+                            Toast.makeText(context, "登録に失敗しました。", Toast.LENGTH_SHORT).show()
+                            onBackPressed(Unit)
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 @Composable

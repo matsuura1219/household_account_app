@@ -85,7 +85,11 @@ fun MainScreen() {
                         route = Navigation.InputMoney.route,
                     ) {
                         title.value = Navigation.InputMoney.title
-                        InputMoneyScreen()
+                        InputMoneyScreen (
+                            onBackPressed = {
+                                navController.navigateUp()
+                            },
+                        )
                     }
                 }
             }
@@ -121,7 +125,8 @@ fun MainScreen() {
                                     launchSingleTop = true
                                     restoreState = true
                                 }
-                            })
+                            }
+                        )
                     }
                 }
             }
