@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import jp.matsuura.household_accountandroid.ui.input_money.viewpager.ViewPagerAdapter
 import jp.matsuura.householda_ccountandroid.R
 import jp.matsuura.householda_ccountandroid.databinding.FragmentInputMoneyBinding
 
@@ -29,6 +31,21 @@ class InputMoneyFragment : Fragment(R.layout.fragment_input_money) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
+
+    private fun initView() {
+        val adapter = ViewPagerAdapter(requireActivity())
+        binding.viewPager.adapter = adapter
+        val tabLayout = binding.tabLayout
+        val viewPager = binding.viewPager
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            when (position) {
+                0 -> tab.text = "支出"
+                1 -> tab.text = "収入"
+                else -> throw IllegalStateException("ViewPager内のFragment数が正常ではありません")
+            }
+        }.attach()
     }
 
     override fun onDestroyView() {
