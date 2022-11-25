@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="入力画面"
+        android:id="@+id/inputMoneyFragment"
+        android:icon="@drawable/ic_registration" />
+    <item
+        android:title="カレンダー"
+        android:id="@+id/calendarFragment"
+        android:icon="@drawable/ic_calendar"/>
+    <item
+        android:title="集計"
+        android:id="@+id/summaryFragment"
+        android:icon="@drawable/ic_chart"/>
+
+    <item
+        android:title="アカウント"
+        android:id="@+id/accountFragment"
+        android:icon="@drawable/ic_account"/>
+
+</menu>

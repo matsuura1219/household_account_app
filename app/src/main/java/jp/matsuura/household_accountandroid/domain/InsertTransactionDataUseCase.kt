@@ -1,4 +1,4 @@
-package jp.matsuura.household_accountandroid.usecase
+package jp.matsuura.household_accountandroid.domain
 
 import jp.matsuura.household_accountandroid.data.repository.TransactionRepository
 import java.util.Date

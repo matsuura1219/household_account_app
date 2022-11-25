@@ -1,4 +1,4 @@
-package jp.matsuura.household_accountandroid.usecase
+package jp.matsuura.household_accountandroid.domain
 
 import jp.matsuura.household_accountandroid.data.repository.CategoryRepository
 import jp.matsuura.household_accountandroid.model.CategoryModel
