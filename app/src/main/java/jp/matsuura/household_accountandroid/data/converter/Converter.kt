@@ -7,5 +7,6 @@ fun CategoryEntity.toModel(): CategoryModel {
     return CategoryModel(
         id = id,
         categoryName = categoryName,
+        categoryType = categoryType,
     )
 }
