@@ -5,18 +5,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
 import jp.matsuura.household_accountandroid.ui.input_money.recyclerview.RecyclerViewAdapter
 import jp.matsuura.householda_ccountandroid.R
-import jp.matsuura.householda_ccountandroid.databinding.FragmentCalendarBinding
 import jp.matsuura.householda_ccountandroid.databinding.FragmentCategoryBinding
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class CategoryFragment : Fragment(R.layout.fragment_category) {
 
     private var _binding: FragmentCategoryBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel by viewModels<CategoryViewModel>()
+
+    private lateinit var adapter: RecyclerViewAdapter
 
     private var position: Int = -1
 
@@ -40,14 +52,37 @@ class CategoryFragment : Fragment(R.layout.fragment_category) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                handelUiState(coroutineScope = this)
+                handleUiEvent(coroutineScope = this)
+            }
+        }
     }
 
     private fun initView() {
         binding.recyclerView.setHasFixedSize(true)
-        val dataSet = listOf("test", "test", "test", "test", "test", "test", "test")
-        val adapter = RecyclerViewAdapter(dataSet = dataSet)
+        adapter = RecyclerViewAdapter()
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 4, RecyclerView.VERTICAL, false)
         binding.recyclerView.adapter = adapter
+    }
+
+    private fun handelUiState(coroutineScope: CoroutineScope) {
+        viewModel.uiState.onEach {
+            if (position == 0) {
+                adapter.update(items = it.spendingCategoryList)
+            } else {
+                adapter.update(items = it.incomeCategoryList)
+            }
+        }.launchIn(coroutineScope)
+    }
+
+    private fun handleUiEvent(coroutineScope: CoroutineScope) {
+        viewModel.uiEvent.onEach {
+            when (it) {
+                is CategoryViewModel.UiEvent.Failure -> {}
+            }
+        }.launchIn(coroutineScope)
     }
 
     override fun onDestroyView() {
