@@ -26,21 +26,34 @@ object DatasourceModule {
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
-                    val sqlBuilder = StringBuilder()
-                    val defaultCategories = Const.DEFAULT_CATEGORIES
-                    val constValue = "INSERT INTO 'category' VALUES"
-                    sqlBuilder.append(constValue)
-                    defaultCategories.forEachIndexed { index, string ->
-                        if (index == defaultCategories.size - 1) {
-                            sqlBuilder.append("($index, '$string')")
-                        } else {
-                            sqlBuilder.append("($index, '$string'),")
-                        }
-                    }
-                    db.execSQL(sqlBuilder.toString())
+                    executeSql(db = db, type = 0)
+                    executeSql(db = db, type = 1)
                 }
             }
             ).build()
+    }
+
+    private fun executeSql(db: SupportSQLiteDatabase,type: Int) {
+        if (type != 0 && type != 1) {
+            return
+        }
+        val sqlBuilder = StringBuilder()
+        val defaultCategory = if (type == 0)  {
+            Const.DEFAULT_SPENDING_CATEGORIES
+        } else {
+            Const.DEFAULT_INCOME_CATEGORIES
+        }
+        val constValue = "INSERT INTO 'category' VALUES"
+        sqlBuilder.append(constValue)
+        defaultCategory.forEachIndexed { index, string ->
+            val idx = if (type == 0) index else index + 100
+            if (index == defaultCategory.size - 1) {
+                sqlBuilder.append("($idx, '${string}', ${type})")
+            } else {
+                sqlBuilder.append("($idx, '${string}', ${type}),")
+            }
+        }
+        db.execSQL(sqlBuilder.toString())
     }
 
 }
