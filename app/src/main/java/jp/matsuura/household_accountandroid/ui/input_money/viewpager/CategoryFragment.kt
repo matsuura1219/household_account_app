@@ -19,6 +19,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class CategoryFragment : Fragment(R.layout.fragment_category) {
@@ -52,6 +53,7 @@ class CategoryFragment : Fragment(R.layout.fragment_category) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        handleListener()
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 handelUiState(coroutineScope = this)
@@ -65,6 +67,12 @@ class CategoryFragment : Fragment(R.layout.fragment_category) {
         adapter = RecyclerViewAdapter()
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 4, RecyclerView.VERTICAL, false)
         binding.recyclerView.adapter = adapter
+    }
+
+    private fun handleListener() {
+        binding.calculatorView.onValueClicked =  { number ->
+            viewModel.onInputMoney(amount = number)
+        }
     }
 
     private fun handelUiState(coroutineScope: CoroutineScope) {

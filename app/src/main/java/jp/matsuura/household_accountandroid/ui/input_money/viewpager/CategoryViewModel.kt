@@ -20,6 +20,7 @@ class CategoryViewModel @Inject constructor(
             isProgressVisible = false,
             spendingCategoryList = emptyList(),
             incomeCategoryList = emptyList(),
+            inputMoney = 0,
         )
     )
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
@@ -50,10 +51,15 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
+    fun onInputMoney(amount: Int) {
+        _uiState.update { it.copy(inputMoney = amount) }
+    }
+
     data class UiState(
         val isProgressVisible: Boolean,
         val spendingCategoryList: List<String>,
         val incomeCategoryList: List<String>,
+        val inputMoney: Int,
     )
 
     sealed interface UiEvent {
