@@ -1,5 +1,6 @@
-package jp.matsuura.household_accountandroid.ui.input_money.viewpager
+package jp.matsuura.household_accountandroid.ui.category.viewpager
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,14 +14,13 @@ import javax.inject.Inject
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
     private val getAllCategory: GetAllCategoryUseCase,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(
         UiState(
             isProgressVisible = false,
-            spendingCategoryList = emptyList(),
-            incomeCategoryList = emptyList(),
-            showCalculator = false,
+            categoryList = emptyList(),
         )
     )
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
@@ -28,8 +28,7 @@ class CategoryViewModel @Inject constructor(
     private val _uiEvent: MutableSharedFlow<UiEvent> = MutableSharedFlow()
     val uiEvent: SharedFlow<UiEvent> = _uiEvent.asSharedFlow()
 
-    private var totalMoneyAmount: Int = 0
-    private var selectedCategory: CategoryModel? = null
+    private val categoryType: Int = requireNotNull(savedStateHandle[CategoryFragment.POSITION])
 
     init {
         viewModelScope.launch {
@@ -37,13 +36,10 @@ class CategoryViewModel @Inject constructor(
                 _uiState.update { it.copy(isProgressVisible = true) }
                 getAllCategory()
             }.onSuccess { categoryList ->
-                val spendingCategoryList = categoryList.filter { it.categoryType == 0 }
-                val incomeCategoryList = categoryList.filter { it.categoryType == 1 }
                 _uiState.update {
                     it.copy(
                         isProgressVisible = false,
-                        spendingCategoryList = spendingCategoryList,
-                        incomeCategoryList = incomeCategoryList,
+                        categoryList = categoryList.filter { category -> category.categoryType == categoryType },
                     )
                 }
             }.onFailure {
@@ -54,20 +50,9 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
-    fun onItemClicked(category: CategoryModel) {
-        selectedCategory = category
-        _uiState.update { it.copy(showCalculator = true) }
-    }
-
-    fun onInputMoney(amount: Int) {
-        totalMoneyAmount = amount
-    }
-
     data class UiState(
         val isProgressVisible: Boolean,
-        val spendingCategoryList: List<CategoryModel>,
-        val incomeCategoryList: List<CategoryModel>,
-        val showCalculator: Boolean,
+        val categoryList: List<CategoryModel>,
     )
 
     sealed interface UiEvent {

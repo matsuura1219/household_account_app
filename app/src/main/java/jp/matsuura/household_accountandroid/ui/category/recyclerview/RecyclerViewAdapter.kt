@@ -1,10 +1,11 @@
-package jp.matsuura.household_accountandroid.ui.input_money.recyclerview
+package jp.matsuura.household_accountandroid.ui.category.recyclerview
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import jp.matsuura.household_accountandroid.model.CategoryModel
+import jp.matsuura.household_accountandroid.ui.category.recyclerview.CategoryViewHolder
 import jp.matsuura.householda_ccountandroid.R
 
 class RecyclerViewAdapter(

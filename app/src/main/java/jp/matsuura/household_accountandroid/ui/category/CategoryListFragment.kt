@@ -1,4 +1,4 @@
-package jp.matsuura.household_accountandroid.ui.input_money
+package jp.matsuura.household_accountandroid.ui.category
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,17 +8,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
-import jp.matsuura.household_accountandroid.ui.input_money.viewpager.ViewPagerAdapter
+import jp.matsuura.household_accountandroid.ui.category.viewpager.ViewPagerAdapter
 import jp.matsuura.householda_ccountandroid.R
 import jp.matsuura.householda_ccountandroid.databinding.FragmentInputMoneyBinding
 
 @AndroidEntryPoint
-class InputMoneyFragment : Fragment(R.layout.fragment_input_money) {
+class CategoryListFragment : Fragment(R.layout.fragment_input_money) {
 
     private var _binding: FragmentInputMoneyBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by viewModels<InputMoneyViewModel>()
+    private val viewModel by viewModels<CategoryListViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,

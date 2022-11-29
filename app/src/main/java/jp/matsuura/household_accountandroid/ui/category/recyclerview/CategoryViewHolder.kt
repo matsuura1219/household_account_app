@@ -1,4 +1,4 @@
-package jp.matsuura.household_accountandroid.ui.input_money.recyclerview
+package jp.matsuura.household_accountandroid.ui.category.recyclerview
 
 import android.view.View
 import android.widget.ImageView
