@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -64,7 +65,11 @@ class CategoryFragment : Fragment(R.layout.fragment_category) {
 
     private fun initView() {
         binding.recyclerView.setHasFixedSize(true)
-        adapter = RecyclerViewAdapter()
+        adapter = RecyclerViewAdapter(
+            onItemClicked = {
+                viewModel.onItemClicked(category = it)
+            }
+        )
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 4, RecyclerView.VERTICAL, false)
         binding.recyclerView.adapter = adapter
     }
@@ -82,6 +87,7 @@ class CategoryFragment : Fragment(R.layout.fragment_category) {
             } else {
                 adapter.update(items = it.incomeCategoryList)
             }
+            binding.calculatorView.isGone = !it.showCalculator
         }.launchIn(coroutineScope)
     }
 

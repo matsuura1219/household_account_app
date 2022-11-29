@@ -20,7 +20,7 @@ class CategoryViewModel @Inject constructor(
             isProgressVisible = false,
             spendingCategoryList = emptyList(),
             incomeCategoryList = emptyList(),
-            inputMoney = 0,
+            showCalculator = false,
         )
     )
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
@@ -28,14 +28,17 @@ class CategoryViewModel @Inject constructor(
     private val _uiEvent: MutableSharedFlow<UiEvent> = MutableSharedFlow()
     val uiEvent: SharedFlow<UiEvent> = _uiEvent.asSharedFlow()
 
+    private var totalMoneyAmount: Int = 0
+    private var selectedCategory: CategoryModel? = null
+
     init {
         viewModelScope.launch {
             kotlin.runCatching {
                 _uiState.update { it.copy(isProgressVisible = true) }
                 getAllCategory()
             }.onSuccess { categoryList ->
-                val spendingCategoryList = categoryList.filter { it.categoryType == 0 }.map { it.categoryName }
-                val incomeCategoryList = categoryList.filter { it.categoryType == 1 }.map { it.categoryName }
+                val spendingCategoryList = categoryList.filter { it.categoryType == 0 }
+                val incomeCategoryList = categoryList.filter { it.categoryType == 1 }
                 _uiState.update {
                     it.copy(
                         isProgressVisible = false,
@@ -51,15 +54,20 @@ class CategoryViewModel @Inject constructor(
         }
     }
 
+    fun onItemClicked(category: CategoryModel) {
+        selectedCategory = category
+        _uiState.update { it.copy(showCalculator = true) }
+    }
+
     fun onInputMoney(amount: Int) {
-        _uiState.update { it.copy(inputMoney = amount) }
+        totalMoneyAmount = amount
     }
 
     data class UiState(
         val isProgressVisible: Boolean,
-        val spendingCategoryList: List<String>,
-        val incomeCategoryList: List<String>,
-        val inputMoney: Int,
+        val spendingCategoryList: List<CategoryModel>,
+        val incomeCategoryList: List<CategoryModel>,
+        val showCalculator: Boolean,
     )
 
     sealed interface UiEvent {

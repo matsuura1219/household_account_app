@@ -4,14 +4,17 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import jp.matsuura.household_accountandroid.model.CategoryModel
 import jp.matsuura.householda_ccountandroid.R
 
-class RecyclerViewAdapter : RecyclerView.Adapter<CategoryViewHolder>() {
+class RecyclerViewAdapter(
+    private val onItemClicked: (CategoryModel) -> Unit,
+) : RecyclerView.Adapter<CategoryViewHolder>() {
 
-    private var dataSet: List<String> = emptyList()
+    private var dataSet: List<CategoryModel> = emptyList()
 
     @SuppressLint("NotifyDataSetChanged")
-    fun update(items: List<String>) {
+    fun update(items: List<CategoryModel>) {
         if (dataSet == items) return
         dataSet = items
         notifyDataSetChanged()
@@ -23,7 +26,10 @@ class RecyclerViewAdapter : RecyclerView.Adapter<CategoryViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        holder.categoryTextView.text = dataSet[position]
+        holder.rootView.setOnClickListener {
+            onItemClicked(dataSet[position])
+        }
+        holder.categoryTextView.text = dataSet[position].categoryName
         holder.categoryImageView.setBackgroundResource(R.drawable.ic_food)
     }
 
