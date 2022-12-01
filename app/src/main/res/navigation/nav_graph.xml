@@ -3,26 +3,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/inputMoneyFragment">
+    app:startDestination="@id/categoryListFragment">
 
     <fragment
-        android:id="@+id/inputMoneyFragment"
-        android:name="jp.matsuura.household_accountandroid.ui.input_money.InputMoneyFragment"
-        tools:layout="@layout/fragment_input_money" />
+        android:id="@+id/categoryListFragment"
+        android:name="jp.matsuura.household_accountandroid.ui.category.CategoryListFragment"
+        tools:layout="@layout/fragment_category_list">
+
+        <action
+            android:id="@+id/navigate_input_money_fragment"
+            app:destination="@id/inputMoneyFragment" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/summaryFragment"
         android:name="jp.matsuura.household_accountandroid.ui.summary.SummaryFragment"
-        tools:layout="@layout/fragment_input_money" />
+        tools:layout="@layout/fragment_category_list" />
 
     <fragment
         android:id="@+id/calendarFragment"
         android:name="jp.matsuura.household_accountandroid.ui.calendar.CalendarFragment"
-        tools:layout="@layout/fragment_input_money" />
+        tools:layout="@layout/fragment_category_list" />
 
     <fragment
         android:id="@+id/accountFragment"
         android:name="jp.matsuura.household_accountandroid.ui.account.AccountFragment"
-        tools:layout="@layout/fragment_input_money" />
+        tools:layout="@layout/fragment_category_list" />
+
+    <fragment
+        android:id="@+id/inputMoneyFragment"
+        android:name="jp.matsuura.household_accountandroid.ui.input_money.InputMoneyFragment"
+        tools:layout="@layout/fragment_input_money">
+
+        <argument
+            android:name="categoryType"
+            app:argType="integer" />
+
+        <argument
+            android:name="categoryId"
+            app:argType="integer" />
+
+    </fragment>
+
 
 </navigation>

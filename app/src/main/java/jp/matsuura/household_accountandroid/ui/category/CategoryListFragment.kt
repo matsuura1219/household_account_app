@@ -13,7 +13,7 @@ import jp.matsuura.householda_ccountandroid.R
 import jp.matsuura.householda_ccountandroid.databinding.FragmentInputMoneyBinding
 
 @AndroidEntryPoint
-class CategoryListFragment : Fragment(R.layout.fragment_input_money) {
+class CategoryListFragment : Fragment(R.layout.fragment_category_list) {
 
     private var _binding: FragmentInputMoneyBinding? = null
     private val binding get() = _binding!!

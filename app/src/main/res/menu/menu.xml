@@ -3,7 +3,7 @@
 
     <item
         android:title="入力画面"
-        android:id="@+id/inputMoneyFragment"
+        android:id="@+id/categoryListFragment"
         android:icon="@drawable/ic_registration" />
     <item
         android:title="カレンダー"
