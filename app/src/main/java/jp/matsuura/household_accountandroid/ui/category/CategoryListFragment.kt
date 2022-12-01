@@ -10,12 +10,13 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import jp.matsuura.household_accountandroid.ui.category.viewpager.ViewPagerAdapter
 import jp.matsuura.householda_ccountandroid.R
+import jp.matsuura.householda_ccountandroid.databinding.FragmentCategoryListBinding
 import jp.matsuura.householda_ccountandroid.databinding.FragmentInputMoneyBinding
 
 @AndroidEntryPoint
 class CategoryListFragment : Fragment(R.layout.fragment_category_list) {
 
-    private var _binding: FragmentInputMoneyBinding? = null
+    private var _binding: FragmentCategoryListBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<CategoryListViewModel>()
@@ -25,7 +26,7 @@ class CategoryListFragment : Fragment(R.layout.fragment_category_list) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentInputMoneyBinding.inflate(inflater, container, false)
+        _binding = FragmentCategoryListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
