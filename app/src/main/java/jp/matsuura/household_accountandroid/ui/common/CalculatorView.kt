@@ -18,11 +18,10 @@ class CalculatorView @JvmOverloads constructor(
     attrs: AttributeSet,
 ) : ConstraintLayout(context, attrs) {
 
-    var onValueClicked: ((Int) -> Unit)? = null
+    var onValueClicked: ((CalculatorType) -> Unit)? = null
 
     private val adapter: Adapter
     private val recyclerView: RecyclerView
-    private val textView: TextView
 
     private val defaultItemList: List<CalculatorType> = listOf(
         CalculatorType.Number(7),
@@ -43,57 +42,17 @@ class CalculatorView @JvmOverloads constructor(
         CalculatorType.Signal("OK"),
     )
 
-    private var currentData: Int = 0
-
-    companion object {
-        const val MAX_LENGTH: Int = 9
-    }
-
     init {
         inflate(context, R.layout.item_calculator_list, this)
         adapter = Adapter(
             onClick = { calculatorType ->
-                handleInputData(input = calculatorType)
-                onValueClicked?.invoke(currentData)
+                onValueClicked?.invoke(calculatorType)
             }
         )
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = GridLayoutManager(context, 4, RecyclerView.VERTICAL, false)
         adapter.update(items = defaultItemList)
-        textView = findViewById(R.id.inputData)
-        textView.text = currentData.toString()
-    }
-
-    private fun handleInputData(input: CalculatorType) {
-        when (input) {
-            is CalculatorType.Signal -> {
-                handleSignal(signal = input.signal)
-            }
-            is CalculatorType.Number -> {
-                handleNumber(number = input.number)
-            }
-        }
-    }
-
-    private fun handleNumber(number: Int) {
-        if (currentData.toString().length >= MAX_LENGTH) return
-        currentData = if (currentData == 0) {
-            number
-        } else {
-            val str = currentData.toString() + number.toString()
-            str.toInt()
-        }
-        textView.text = currentData.toString()
-    }
-
-    private fun handleSignal(signal: String) {
-        when (signal) {
-            "DEL" -> {
-                currentData /= 10
-                textView.text = currentData.toString()
-            }
-        }
     }
 
     class Adapter(

@@ -1,9 +1,8 @@
 package jp.matsuura.household_accountandroid.util
 
-object Const {
+import jp.matsuura.household_accountandroid.model.CalculatorType
 
-    private const val SPENDING_TYPE: Int = 0
-    private const val INCOME_TYPE: Int = 1
+object Const {
 
     val DEFAULT_SPENDING_CATEGORIES: List<String> = listOf(
         "買い物",
