@@ -68,7 +68,8 @@ class CategoryFragment : Fragment(R.layout.fragment_category) {
             onItemClicked = {
                 findNavController().navigate(
                     CategoryListFragmentDirections.navigateInputMoneyFragment(
-                        categoryId = it.id
+                        categoryId = it.id,
+                        categoryName = it.categoryName,
                     )
                 )
             }
