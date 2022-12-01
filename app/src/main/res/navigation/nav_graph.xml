@@ -37,12 +37,9 @@
         tools:layout="@layout/fragment_input_money">
 
         <argument
-            android:name="categoryType"
-            app:argType="integer" />
-
-        <argument
             android:name="categoryId"
-            app:argType="integer" />
+            app:argType="integer"
+            android:defaultValue="-1"/>
 
     </fragment>
 

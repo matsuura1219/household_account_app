@@ -9,9 +9,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import jp.matsuura.household_accountandroid.ui.category.CategoryListFragmentDirections
 import jp.matsuura.household_accountandroid.ui.category.recyclerview.RecyclerViewAdapter
 import jp.matsuura.householda_ccountandroid.R
 import jp.matsuura.householda_ccountandroid.databinding.FragmentCategoryBinding
@@ -64,7 +66,11 @@ class CategoryFragment : Fragment(R.layout.fragment_category) {
         binding.recyclerView.setHasFixedSize(true)
         adapter = RecyclerViewAdapter(
             onItemClicked = {
-                // TODO: カテゴリーがクリックされた場合の実装を行ってください。
+                findNavController().navigate(
+                    CategoryListFragmentDirections.navigateInputMoneyFragment(
+                        categoryId = it.id
+                    )
+                )
             }
         )
         binding.recyclerView.layoutManager = GridLayoutManager(requireContext(), 4, RecyclerView.VERTICAL, false)
