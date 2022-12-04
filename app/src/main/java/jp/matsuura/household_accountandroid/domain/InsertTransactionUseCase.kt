@@ -6,14 +6,14 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class InsertTransactionDataUseCase @Inject constructor(
+class InsertTransactionUseCase @Inject constructor(
     private val transactionRepository: TransactionRepository,
 ) {
 
-    suspend operator fun invoke(categoryId: Int, moneyMount: Int, currentTime: Date) {
+    suspend operator fun invoke(categoryId: Int, money: Int, currentTime: Date) {
         transactionRepository.insertTransaction(
             categoryId = categoryId,
-            moneyMount = moneyMount,
+            money = money,
             currentTime = currentTime,
         )
     }

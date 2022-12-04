@@ -9,7 +9,7 @@ import java.util.Date
 data class TransactionEntity(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "category_id") val categoryId: Int,
-    @ColumnInfo(name = "money_mount") val moneyMount: Int,
+    @ColumnInfo(name = "money") val money: Int,
     @ColumnInfo(name = "created_at") val createdAt: Date,
     @ColumnInfo(name = "updated_at") val updatedAt: Date,
 )

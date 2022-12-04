@@ -13,12 +13,12 @@ class TransactionRepository @Inject constructor(
     private val db: AppDatabase,
 ) {
 
-    suspend fun insertTransaction(categoryId: Int, moneyMount: Int, currentTime: Date) {
+    suspend fun insertTransaction(categoryId: Int, money: Int, currentTime: Date) {
         return withContext(Dispatchers.IO) {
             val entity = TransactionEntity(
                 id = 0,
                 categoryId = categoryId,
-                moneyMount = moneyMount,
+                money = money,
                 createdAt = currentTime,
                 updatedAt = currentTime,
             )
