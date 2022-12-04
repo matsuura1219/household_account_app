@@ -9,7 +9,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
+import jp.matsuura.household_accountandroid.ext.showSnackBar
 import jp.matsuura.household_accountandroid.ext.toStringForApp
 import jp.matsuura.householda_ccountandroid.R
 import jp.matsuura.householda_ccountandroid.databinding.FragmentInputMoneyBinding
@@ -37,11 +39,21 @@ class InputMoneyFragment : Fragment(R.layout.fragment_input_money) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        handleListener()
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 handleUiState(coroutineScope = this)
                 handleUiEvent(coroutineScope = this)
             }
+        }
+    }
+
+    private fun handleListener() {
+        binding.calculatorView.onValueClicked = {
+            viewModel.onCalculatorClicked(value = it)
+        }
+        binding.confirmButton.setOnClickListener {
+            viewModel.onConfirmButtonClicked()
         }
     }
 
@@ -56,8 +68,17 @@ class InputMoneyFragment : Fragment(R.layout.fragment_input_money) {
     private fun handleUiEvent(coroutineScope: CoroutineScope) {
         viewModel.uiEvent.onEach {
             when (it) {
-                is InputMoneyViewModel.UiEvent.Success -> {}
-                is InputMoneyViewModel.UiEvent.Failure -> {}
+                is InputMoneyViewModel.UiEvent.Success -> {
+                    findNavController().popBackStack()
+                    requireView().showSnackBar(message = "${it.categoryName}に${it.totalMoney}円\n登録が完了しました。")
+                }
+                is InputMoneyViewModel.UiEvent.Failure -> {
+                    findNavController().popBackStack()
+                    requireView().showSnackBar(message = "登録に失敗しました。")
+                }
+                is InputMoneyViewModel.UiEvent.NotInputMoney -> {
+                    requireView().showSnackBar(message = "金額を入力してください。")
+                }
             }
         }.launchIn(coroutineScope)
     }

@@ -2,15 +2,20 @@ package jp.matsuura.household_accountandroid.ui.input_money
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import jp.matsuura.household_accountandroid.domain.InsertTransactionUseCase
 import jp.matsuura.household_accountandroid.model.CalculatorType
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
 class InputMoneyViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    private val insertTransaction: InsertTransactionUseCase
 ) : ViewModel() {
 
     private val args = InputMoneyFragmentArgs.fromSavedStateHandle(savedStateHandle = savedStateHandle)
@@ -30,6 +35,63 @@ class InputMoneyViewModel @Inject constructor(
     private val _uiEvent: MutableSharedFlow<UiEvent> = MutableSharedFlow()
     val uiEvent: SharedFlow<UiEvent> = _uiEvent.asSharedFlow()
 
+    fun onCalculatorClicked(value: CalculatorType) {
+        when (value) {
+            is CalculatorType.Number -> {
+                handleNumber(number = value.number)
+            }
+            is CalculatorType.Signal -> {
+                handleSignal(signal = value.signal)
+            }
+        }
+    }
+
+    fun onConfirmButtonClicked() {
+        val currentTotalMoney: Int = _uiState.value.totalMoney
+        viewModelScope.launch {
+            _uiState.update { it.copy(isProgressVisible = true) }
+            if (currentTotalMoney == 0) {
+                _uiEvent.emit(UiEvent.NotInputMoney)
+                return@launch
+            }
+            kotlin.runCatching {
+                insertTransaction(
+                    categoryId = categoryId,
+                    money = _uiState.value.totalMoney,
+                    currentTime = _uiState.value.currentDate
+                )
+            }.onSuccess {
+                _uiEvent.emit(UiEvent.Success(categoryName = categoryName, totalMoney = _uiState.value.totalMoney))
+            }.onFailure {
+                Timber.d(it)
+                _uiEvent.emit(UiEvent.Failure)
+            }
+            _uiState.update { it.copy(isProgressVisible = false) }
+        }
+    }
+
+    private fun handleNumber(number: Int) {
+        if (_uiState.value.totalMoney == 0) {
+            _uiState.update { it.copy(totalMoney = number) }
+        } else {
+            val currentTotalMoney: String = _uiState.value.totalMoney.toString()
+            if (currentTotalMoney.length >= MAX_TOTAL_ACCOUNT_DIGITS) {
+                return
+            }
+            val result: String = currentTotalMoney + number.toString()
+            _uiState.update { it.copy(totalMoney = result.toInt()) }
+        }
+    }
+
+    private fun handleSignal(signal: String) {
+        when (signal) {
+            "DEL" -> {
+                val currentTotalMoney = _uiState.value.totalMoney
+                _uiState.update { it.copy(totalMoney = currentTotalMoney / 10) }
+            }
+        }
+    }
+
     data class UiState(
         val isProgressVisible: Boolean,
         val categoryName: String,
@@ -38,7 +100,12 @@ class InputMoneyViewModel @Inject constructor(
     )
 
     sealed interface UiEvent {
-        object Success : UiEvent
+        data class Success(val categoryName: String, val totalMoney: Int) : UiEvent
         object Failure : UiEvent
+        object NotInputMoney : UiEvent
+    }
+
+    companion object {
+        const val MAX_TOTAL_ACCOUNT_DIGITS: Int = 8
     }
 }
