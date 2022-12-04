@@ -22,4 +22,49 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <TextView
+        android:id="@+id/monthTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/appBar"
+        app:layout_constraintStart_toEndOf="@id/backButton"
+        app:layout_constraintEnd_toStartOf="@id/nextButton"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="24dp"
+        android:padding="12dp"
+        tools:text="12月"/>
+
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_back"
+        android:padding="12dp"
+        app:layout_constraintTop_toTopOf="@id/monthTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/monthTextView"
+        app:layout_constraintBottom_toBottomOf="@id/monthTextView"
+        app:layout_constraintHorizontal_chainStyle="packed"/>
+
+    <ImageView
+        android:id="@+id/nextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_next"
+        android:padding="12dp"
+        app:layout_constraintTop_toTopOf="@id/monthTextView"
+        app:layout_constraintStart_toEndOf="@id/monthTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/monthTextView"/>
+
+    <jp.matsuura.household_accountandroid.ui.common.calendar.CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/monthTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
