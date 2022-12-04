@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.Date
 
-@Entity(tableName = "transaction")
+@Entity(tableName = "money_transaction")
 data class TransactionEntity(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "category_id") val categoryId: Int,

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5065e66083244d4e9b37ff0ca3134b8c",
+    "identityHash": "cb8b591b6da3b058b84f1fc406312b3e",
     "entities": [
       {
         "tableName": "category",
@@ -37,7 +37,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "transaction",
+        "tableName": "money_transaction",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `category_id` INTEGER NOT NULL, `money` INTEGER NOT NULL, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL)",
         "fields": [
           {
@@ -84,7 +84,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5065e66083244d4e9b37ff0ca3134b8c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cb8b591b6da3b058b84f1fc406312b3e')"
     ]
   }
 }
