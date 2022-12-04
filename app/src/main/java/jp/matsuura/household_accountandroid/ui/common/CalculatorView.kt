@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.RecyclerView
 import jp.matsuura.household_accountandroid.model.CalculatorType
 import jp.matsuura.householda_ccountandroid.R
 
+typealias OnValueClicked = (CalculatorType) -> Unit
+
 class CalculatorView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet,
 ) : ConstraintLayout(context, attrs) {
 
-    var onValueClicked: ((CalculatorType) -> Unit)? = null
+    var onValueClicked: OnValueClicked? = null
 
     private val adapter: Adapter
     private val recyclerView: RecyclerView
