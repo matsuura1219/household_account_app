@@ -22,4 +22,98 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <ImageView
+        android:id="@+id/userImageView"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="12dp"
+        android:src="@drawable/ic_user_account"
+        app:layout_constraintTop_toBottomOf="@id/appBar"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/userNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/userImageView"
+        app:layout_constraintStart_toEndOf="@id/userImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/userIdTextView"
+        android:textAlignment="textStart"
+        android:paddingStart="12dp"
+        android:text="ログイン" />
+
+    <TextView
+        android:id="@+id/userIdTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/userNameTextView"
+        app:layout_constraintStart_toEndOf="@id/userImageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/userImageView"
+        android:paddingStart="12dp"
+        android:textAlignment="textStart"
+        android:text="ID: 2334455" />
+
+    <TextView
+        android:id="@+id/recommendToUser"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/userImageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="20dp"
+        android:padding="12dp"
+        android:text="トモダチに勧める" />
+
+    <TextView
+        android:id="@+id/reviewComment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/recommendToUser"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="20dp"
+        android:padding="12dp"
+        android:text="レビューをする" />
+
+    <TextView
+        android:id="@+id/changeCategorySetting"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/reviewComment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="20dp"
+        android:padding="12dp"
+        android:text="カテゴリー設定" />
+
+    <TextView
+        android:id="@+id/appVersion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/changeCategorySetting"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="20dp"
+        android:padding="12dp"
+        android:text="アプリのバージョン" />
+
+    <TextView
+        android:id="@+id/deleteTransaction"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/appVersion"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginTop="20dp"
+        android:padding="12dp"
+        android:text="データの削除" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
