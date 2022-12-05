@@ -6,7 +6,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GetTransactionUseCase @Inject constructor(
+class GetTransactionByMonthUseCase @Inject constructor(
     private val transactionRepository: TransactionRepository
 ) {
 
