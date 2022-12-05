@@ -4,15 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.google.android.material.datepicker.MaterialDatePicker
 import dagger.hilt.android.AndroidEntryPoint
 import jp.matsuura.household_accountandroid.ext.showSnackBar
-import jp.matsuura.household_accountandroid.ext.toStringForApp
+import jp.matsuura.household_accountandroid.ext.toStringDateForApp
+import jp.matsuura.household_accountandroid.ext.toStringTimeForApp
 import jp.matsuura.householda_ccountandroid.R
 import jp.matsuura.householda_ccountandroid.databinding.FragmentInputMoneyBinding
 import kotlinx.coroutines.CoroutineScope
@@ -28,6 +32,8 @@ class InputMoneyFragment : Fragment(R.layout.fragment_input_money) {
 
     private val viewModel by viewModels<InputMoneyViewModel>()
 
+    private val args: InputMoneyFragmentArgs by navArgs()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -39,6 +45,7 @@ class InputMoneyFragment : Fragment(R.layout.fragment_input_money) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()
         handleListener()
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -48,6 +55,10 @@ class InputMoneyFragment : Fragment(R.layout.fragment_input_money) {
         }
     }
 
+    private fun initView() {
+        binding.categoryMenuTextView.setText(args.categoryName)
+    }
+
     private fun handleListener() {
         binding.calculatorView.onValueClicked = {
             viewModel.onCalculatorClicked(value = it)
@@ -55,13 +66,28 @@ class InputMoneyFragment : Fragment(R.layout.fragment_input_money) {
         binding.confirmButton.setOnClickListener {
             viewModel.onConfirmButtonClicked()
         }
+        binding.topAppBar.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
+        binding.categoryMenuTextView.setOnItemClickListener { adapterView, view, i, l ->
+            val itemName = adapterView.getItemAtPosition(i) as String
+            viewModel.onItemSelected(itemName = itemName)
+        }
+        binding.dateTextView.setOnClickListener {
+            MaterialDatePicker.Builder.datePicker().build().apply {
+                addOnPositiveButtonClickListener { time: Long ->
+                    viewModel.onDateChanged(time = time)
+                }
+            }.show(parentFragmentManager, "Tag")
+        }
     }
 
     private fun handleUiState(coroutineScope: CoroutineScope) {
         viewModel.uiState.onEach {
-            binding.categoryTextView.text = it.categoryName
+            val adapter = ArrayAdapter(requireContext(), R.layout.item_dropdown_menu_popup, it.categoryItemList.map { category -> category.categoryName })
+            binding.categoryMenuTextView.setAdapter(adapter)
             binding.totalMoneyTextView.text = it.totalMoney.toString()
-            binding.dateTextView.text = it.currentDate.toStringForApp()
+            binding.dateTextView.text = it.currentDate.toStringDateForApp()
         }.launchIn(coroutineScope)
     }
 

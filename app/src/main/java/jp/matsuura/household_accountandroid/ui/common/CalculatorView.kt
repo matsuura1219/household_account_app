@@ -29,19 +29,19 @@ class CalculatorView @JvmOverloads constructor(
         CalculatorType.Number(7),
         CalculatorType.Number(8),
         CalculatorType.Number(9),
-        CalculatorType.Signal("今日"),
+        CalculatorType.Signal("÷"),
         CalculatorType.Number(4),
         CalculatorType.Number(5),
         CalculatorType.Number(6),
-        CalculatorType.Signal("+"),
+        CalculatorType.Signal("×"),
         CalculatorType.Number(1),
         CalculatorType.Number(2),
         CalculatorType.Number(3),
-        CalculatorType.Signal("-"),
-        CalculatorType.Signal("."),
+        CalculatorType.Signal("+"),
+        CalculatorType.Signal("00"),
         CalculatorType.Number(0),
         CalculatorType.Signal("DEL"),
-        CalculatorType.Signal("OK"),
+        CalculatorType.Signal("-"),
     )
 
     init {
@@ -97,4 +97,6 @@ class CalculatorView @JvmOverloads constructor(
             return dataSet.size
         }
     }
+
+
 }

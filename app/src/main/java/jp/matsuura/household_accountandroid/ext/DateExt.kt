@@ -5,6 +5,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @SuppressLint("SimpleDateFormat")
-fun Date.toStringForApp(): String {
-    return SimpleDateFormat("yyyy/MM/dd hh:mm:ss").format(this)
+fun Date.toStringDateForApp(): String {
+    return SimpleDateFormat("yyyy年MM月dd日").format(this)
+}
+
+@SuppressLint("SimpleDateFormat")
+fun Date.toStringTimeForApp(): String {
+    return SimpleDateFormat("hh時mm分").format(this)
 }

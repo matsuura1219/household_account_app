@@ -4,23 +4,29 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import jp.matsuura.household_accountandroid.domain.GetAllCategoryUseCase
 import jp.matsuura.household_accountandroid.domain.InsertTransactionUseCase
 import jp.matsuura.household_accountandroid.model.CalculatorType
+import jp.matsuura.household_accountandroid.model.CategoryModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.Date
+import java.util.SimpleTimeZone
 import javax.inject.Inject
 
 @HiltViewModel
 class InputMoneyViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val insertTransaction: InsertTransactionUseCase
+    private val insertTransaction: InsertTransactionUseCase,
+    private val getAllCategory: GetAllCategoryUseCase,
 ) : ViewModel() {
 
     private val args = InputMoneyFragmentArgs.fromSavedStateHandle(savedStateHandle = savedStateHandle)
     private val categoryId: Int = args.categoryId
     private val categoryName: String = args.categoryName
+
+    private var currentCategoryId: Int = categoryId
 
     private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(
         UiState(
@@ -28,12 +34,28 @@ class InputMoneyViewModel @Inject constructor(
             categoryName = categoryName,
             totalMoney = 0,
             currentDate = Date(),
+            categoryItemList = emptyList(),
         )
     )
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
     private val _uiEvent: MutableSharedFlow<UiEvent> = MutableSharedFlow()
     val uiEvent: SharedFlow<UiEvent> = _uiEvent.asSharedFlow()
+
+    init {
+        viewModelScope.launch {
+            kotlin.runCatching {
+                _uiState.update { it.copy(isProgressVisible = true) }
+                getAllCategory()
+            }.onSuccess { categoryList ->
+                _uiState.update { it.copy(categoryItemList = categoryList) }
+            }.onFailure {
+                Timber.d(it)
+                _uiEvent.emit(UiEvent.Failure)
+            }
+            _uiState.update { it.copy(isProgressVisible = false) }
+        }
+    }
 
     fun onCalculatorClicked(value: CalculatorType) {
         when (value) {
@@ -44,6 +66,15 @@ class InputMoneyViewModel @Inject constructor(
                 handleSignal(signal = value.signal)
             }
         }
+    }
+
+    fun onItemSelected(itemName: String) {
+        val categoryList = _uiState.value.categoryItemList
+        currentCategoryId = categoryList.first { it.categoryName == itemName }.id
+    }
+
+    fun onDateChanged(time: Long) {
+        _uiState.update { it.copy(currentDate = Date(time)) }
     }
 
     fun onConfirmButtonClicked() {
@@ -97,6 +128,7 @@ class InputMoneyViewModel @Inject constructor(
         val categoryName: String,
         val totalMoney: Int,
         val currentDate: Date,
+        val categoryItemList: List<CategoryModel>
     )
 
     sealed interface UiEvent {
