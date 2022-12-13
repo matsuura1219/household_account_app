@@ -6,12 +6,12 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GetTransactionByMonthUseCase @Inject constructor(
+class GetTransactionByDayUseCase @Inject constructor(
     private val transactionRepository: TransactionRepository
 ) {
 
-    suspend operator fun invoke(year: Int, month: Int): List<TransactionModel> {
-        return transactionRepository.getTransactionByMonth(year = year, month = month)
+    suspend operator fun invoke(year: Int, month: Int, day: Int): List<TransactionModel> {
+        return transactionRepository.getTransactionByDay(year = year, month = month, day = day)
     }
 
 }

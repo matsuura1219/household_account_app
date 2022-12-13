@@ -28,12 +28,21 @@ class TransactionRepository @Inject constructor(
         }
     }
 
-    suspend fun getTransaction(year: Int, month: Int): List<TransactionModel> {
+    suspend fun getTransactionByMonth(year: Int, month: Int): List<TransactionModel> {
         return withContext(Dispatchers.IO) {
             val calendar = Calendar.getInstance()
-            calendar.set(year, month, 1)
+            calendar.set(year, month - 1, 1)
             val date = calendar.time
-            db.transactionDao().getByMonth(dateOfMonth = date).map { it.toModel() }
+            db.transactionDao().getByMonth(date = date).map { it.toModel() }
+        }
+    }
+
+    suspend fun getTransactionByDay(year: Int, month: Int, day: Int): List<TransactionModel> {
+        return withContext(Dispatchers.IO) {
+            val calendar = Calendar.getInstance()
+            calendar.set(year, month - 1, day)
+            val date = calendar.time
+            db.transactionDao().getByDay(date = date).map { it.toModel() }
         }
     }
 }

@@ -3,18 +3,19 @@ package jp.matsuura.household_accountandroid.ui.calendar
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jp.matsuura.household_accountandroid.domain.GetTransactionUseCase
+import jp.matsuura.household_accountandroid.domain.GetTransactionByDayUseCase
+import jp.matsuura.household_accountandroid.domain.GetTransactionByMonthUseCase
 import jp.matsuura.household_accountandroid.model.TransactionModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.lang.Thread.State
 import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
 class CalendarViewModel @Inject constructor(
-    private val getTransaction: GetTransactionUseCase,
+    private val getTransactionByMonth: GetTransactionByMonthUseCase,
+    private val getTransactionByDay: GetTransactionByDayUseCase,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<UiState> = MutableStateFlow(
@@ -23,7 +24,8 @@ class CalendarViewModel @Inject constructor(
             currentYear = -1,
             currentMonth = -1,
             currentDay = -1,
-            transactionList = emptyList(),
+            transactionListByMonth = emptyList(),
+            transactionListByDays = emptyList()
         )
     )
     val uiState: StateFlow<UiState> = _uiState.asStateFlow()
@@ -34,15 +36,28 @@ class CalendarViewModel @Inject constructor(
     init {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DATE)
+        val month = calendar.get(Calendar.MONTH) + 1
+        val day = calendar.get(Calendar.DATE) + 1
         _uiState.update { it.copy(currentYear = year, currentMonth = month, currentDay = day) }
 
         viewModelScope.launch {
             kotlin.runCatching {
-                getTransaction(year = year, month = month)
+                getTransactionByMonth(year = year, month = month)
             }.onSuccess { transactions ->
-                _uiState.update { it.copy(transactionList = transactions) }
+                _uiState.update { it.copy(transactionListByMonth = transactions) }
+            }.onFailure {
+                Timber.d(it)
+                _uiEvent.emit(UiEvent.Failure)
+            }
+        }
+    }
+
+    fun onDayClicked(year: Int, month: Int, day: Int) {
+        viewModelScope.launch {
+            kotlin.runCatching {
+                getTransactionByDay(year = year, month = month, day = day)
+            }.onSuccess { transactions ->
+                _uiState.update { it.copy(transactionListByDays = transactions) }
             }.onFailure {
                 Timber.d(it)
                 _uiEvent.emit(UiEvent.Failure)
@@ -61,11 +76,11 @@ class CalendarViewModel @Inject constructor(
         }
         viewModelScope.launch {
             kotlin.runCatching {
-                getTransaction(year = currentYear, month = currentMonth)
+                getTransactionByMonth(year = currentYear, month = currentMonth)
             }.onSuccess { transactions ->
                 _uiState.update {
                     it.copy(
-                        transactionList = transactions,
+                        transactionListByMonth = transactions,
                         currentYear = currentYear,
                         currentMonth = currentMonth,
                     )
@@ -88,11 +103,11 @@ class CalendarViewModel @Inject constructor(
         }
         viewModelScope.launch {
             kotlin.runCatching {
-                getTransaction(year = currentYear, month = currentMonth)
+                getTransactionByMonth(year = currentYear, month = currentMonth)
             }.onSuccess { transactions ->
                 _uiState.update {
                     it.copy(
-                        transactionList = transactions,
+                        transactionListByMonth = transactions,
                         currentYear = currentYear,
                         currentMonth = currentMonth,
                     )
@@ -109,7 +124,8 @@ class CalendarViewModel @Inject constructor(
         val currentYear: Int,
         val currentMonth: Int,
         val currentDay: Int,
-        val transactionList: List<TransactionModel>,
+        val transactionListByMonth: List<TransactionModel>,
+        val transactionListByDays: List<TransactionModel>
     )
 
     sealed interface UiEvent {

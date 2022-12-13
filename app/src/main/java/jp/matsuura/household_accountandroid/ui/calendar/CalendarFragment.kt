@@ -46,7 +46,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
 
     private fun handleListener() {
         binding.calendarView.onDayClicked = { year, month, day ->
-            // TODO: 日付押下時の処理を実装します
+            viewModel.onDayClicked(year = year, month = month, day = day)
         }
         binding.backButton.setOnClickListener {
            viewModel.onBackButtonClicked()
@@ -59,7 +59,7 @@ class CalendarFragment : Fragment(R.layout.fragment_calendar) {
     private fun handleUiState(coroutineScope: CoroutineScope) {
         viewModel.uiState.onEach {
             binding.monthTextView.text = it.currentYear.toString() + "年" + it.currentMonth.toString() + "月"
-            binding.calendarView.update(year = it.currentYear, month =  it.currentMonth, transactionList = it.transactionList)
+            binding.calendarView.update(year = it.currentYear, month =  it.currentMonth, transactionList = it.transactionListByMonth)
         }.launchIn(coroutineScope)
     }
 

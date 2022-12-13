@@ -12,7 +12,10 @@ interface TransactionDao {
     @Insert
     fun insert(entity: TransactionEntity)
 
-    @Query("SELECT * FROM money_transaction WHERE datetime(created_at/1000,'unixepoch','start of month') = datetime(:dateOfMonth/1000,'unixepoch','start of month')")
-    fun getByMonth(dateOfMonth: Date): List<TransactionEntity>
+    @Query("SELECT * FROM money_transaction WHERE datetime(created_at/1000,'unixepoch','start of month') = datetime(:date/1000,'unixepoch','start of month')")
+    fun getByMonth(date: Date): List<TransactionEntity>
+
+    @Query("SELECT * FROM money_transaction WHERE datetime(created_at/10,'unixepoch','start of month') = datetime(:date/10,'unixepoch','start of month')")
+    fun getByDay(date: Date): List<TransactionEntity>
 
 }
