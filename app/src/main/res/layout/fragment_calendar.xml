@@ -59,11 +59,42 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/monthTextView"/>
 
+    <TextView
+        android:id="@+id/spendMoneyTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/monthTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/incomeMoneyTextView"
+        android:textAlignment="center"
+        tools:text="支出：¥1,000"/>
+
+    <TextView
+        android:id="@+id/incomeMoneyTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/monthTextView"
+        app:layout_constraintStart_toEndOf="@id/spendMoneyTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textAlignment="center"
+        tools:text="収入：¥1,000"/>
+
+    <jp.matsuura.household_accountandroid.ui.common.switch_view.MultiStateSwitchView
+        android:id="@+id/switchView"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/spendMoneyTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <jp.matsuura.household_accountandroid.ui.common.calendar.CalendarView
         android:id="@+id/calendarView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/monthTextView"
+        app:layout_constraintTop_toBottomOf="@id/switchView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 

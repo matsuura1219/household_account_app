@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.Date
-import java.util.SimpleTimeZone
 import javax.inject.Inject
 
 @HiltViewModel
